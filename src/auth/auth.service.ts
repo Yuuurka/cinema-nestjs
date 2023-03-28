@@ -1,4 +1,4 @@
-import {Body, HttpException, HttpStatus, Inject, Injectable, Post, UnauthorizedException} from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable, UnauthorizedException} from '@nestjs/common';
 import { PG_CONNECTION } from "../constants";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {JwtService} from "@nestjs/jwt";
@@ -11,7 +11,8 @@ export class AuthService {
 
     async login(userDto: CreateUserDto){
         const userData = await this.validateUser(userDto);
-        return this.generateToken(userData)
+        const userID: number = (await this.conn.query(`SELECT user_id FROM "User" WHERE login=$1`, [userDto.login]))['rows'][0]['user_id']
+        return this.generateToken(userData, userID, "login")
     }
 
     async registration(userDto: CreateUserDto){
@@ -28,17 +29,22 @@ export class AuthService {
         if (!user) {
             throw new HttpException("Непредвиденная ошибка", HttpStatus.BAD_REQUEST);
         }
+        const maxUserID = await this.conn.query(`SELECT MAX(user_id) FROM "User"`);
+        await this.conn.query
+        (`INSERT INTO "Profile" (profile_id, name, fam, phone_number) VALUES ($1, $2, $3, $4) 
+          RETURNING * `, [maxUserID, userDto.name || 'null', userDto.fam || 'null', userDto.phone_number || 'null']);
 
-        const profile = await this.conn.query
-        (`INSERT INTO "Profile" (profile_id, name, fam, phone_number) VALUES ((SELECT MAX(user_id) FROM "User"), $1, $2, $3) 
-          RETURNING * `, [userDto.name || 'null', userDto.fam || 'null', userDto.phone_number || 'null']);
 
-
-        return this.generateToken(userDto);
+        return this.generateToken(userDto, maxUserID, "registration");
     }
 
-    private async generateToken(userDto){
-        const payload = {login: userDto.login, password: userDto.password, isAdmin: userDto.isAdmin}
+    private async generateToken(userDto, userID, method){
+        const payload = {login: userDto.login, password: userDto.password, isAdmin: userDto.isAdmin};
+        if (method == "login"){
+            await this.conn.query(`UPDATE "jwttoken" SET token=$1 WHERE user_id=$2`, [this.jwtService.sign(payload), userID])
+        }else{
+            await this.conn.query(`INSERT INTO "jwttoken" (user_id, token) VALUES ($1, $2)`, [userID, this.jwtService.sign(payload)])
+        }
         return {
             token: this.jwtService.sign(payload)
         }
