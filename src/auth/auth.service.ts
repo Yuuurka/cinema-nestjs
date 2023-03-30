@@ -29,7 +29,7 @@ export class AuthService {
         if (!user) {
             throw new HttpException("Непредвиденная ошибка", HttpStatus.BAD_REQUEST);
         }
-        const maxUserID = await this.conn.query(`SELECT MAX(user_id) FROM "User"`);
+        const maxUserID = (await this.conn.query(`SELECT MAX(user_id) FROM "User"`)).rows[0]['max'];
         await this.conn.query
         (`INSERT INTO "Profile" (profile_id, name, fam, phone_number) VALUES ($1, $2, $3, $4) 
           RETURNING * `, [maxUserID, userDto.name || 'null', userDto.fam || 'null', userDto.phone_number || 'null']);
@@ -39,23 +39,31 @@ export class AuthService {
     }
 
     private async generateToken(userDto, userID, method){
-        const payload = {login: userDto.login, password: userDto.password, isAdmin: userDto.isAdmin};
         if (method == "login"){
+            const isAdmin = (await this.conn.query(`SELECT isadmin FROM "User" WHERE login=$1`, [userDto.login]))['rows'][0]['isadmin'];
+            const payload = {login: userDto.login, password: userDto.password, isAdmin};
             await this.conn.query(`UPDATE "jwttoken" SET token=$1 WHERE user_id=$2`, [this.jwtService.sign(payload), userID])
+            return {
+                token: this.jwtService.sign(payload)
+            }
         }else{
+            const payload = {login: userDto.login, password: userDto.password, isAdmin: false};
             await this.conn.query(`INSERT INTO "jwttoken" (user_id, token) VALUES ($1, $2)`, [userID, this.jwtService.sign(payload)])
-        }
-        return {
-            token: this.jwtService.sign(payload)
+            return {
+                token: this.jwtService.sign(payload)
+            }
         }
     }
 
     private async validateUser(userDto){
         const login: string = userDto.login;
         const user = await this.conn.query(`SELECT 1 FROM "User" WHERE login=$1`, [login]);
+        if (user['rowCount'] != 1){
+            throw new UnauthorizedException({message: 'Неверный логин или пароль'})
+        }
         const getHash = await this.conn.query(`SELECT password FROM "User" WHERE login=$1`, [login]);
         const areEquals = await bcrypt.compare(userDto.password, getHash['rows'][0]['password']);
-        if (user['rowCount'] == 1 && areEquals){
+        if (areEquals){
             return userDto;
         }
         throw new UnauthorizedException({message: 'Неверный логин или пароль'})
