@@ -16,20 +16,15 @@ export class AdminPanelController {
     }
 
     @UseGuards(JwtAdminPanelGuard)
-    @Post('/settings-text-block')
-    createTextBlock(@Body() block: CreateTextBlockDto){
-        return this.adminService.createTextBlock(block);
+    @Delete('/user/:id')
+    deleteUser(@Param('id') id: string){
+        return this.adminService.deleteUser(+id);
     }
 
-    @UseGuards(JwtAdminPanelGuard)
-    @Put('/settings-text-block')
-    updateTextBlock(@Body() block: CreateTextBlockDto){
-        return this.adminService.updateTextBlock(block);
-    }
 
     @UseGuards(JwtAdminPanelGuard)
-    @Delete('/settings-text-block')
-    deleteTextBlock(@Param('id') id: string){
-        return this.adminService.deleteTextBlock(+id);
+    @Delete('/delete-images')
+    deleteImages(){
+        return this.adminService.deleteImages();
     }
 }

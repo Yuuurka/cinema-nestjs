@@ -2,6 +2,7 @@ import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from "
 import {Observable} from "rxjs";
 import {JwtService} from "@nestjs/jwt";
 
+/** Проверка авторизован ли пользователь **/
 @Injectable()
 export class JwtCabinetGuard implements CanActivate{
     constructor(private jwtService: JwtService) {

@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextBlockController = void 0;
 const common_1 = require("@nestjs/common");
 const text_block_service_1 = require("./text-block.service");
+const jwt_admin_panel_guard_1 = require("../admin-panel/jwt-admin-panel.guard");
+const text_block_dto_1 = require("./dto/text-block.dto");
+const platform_express_1 = require("@nestjs/platform-express");
 let TextBlockController = class TextBlockController {
     constructor(textBlockService) {
         this.textBlockService = textBlockService;
@@ -24,6 +27,15 @@ let TextBlockController = class TextBlockController {
     }
     getOne(id) {
         return this.textBlockService.findOne(+id);
+    }
+    createTextBlock(block, images) {
+        return this.textBlockService.createTextBlock(block, images);
+    }
+    updateTextBlock(block, images) {
+        return this.textBlockService.updateTextBlock(block, images);
+    }
+    deleteTextBlock(id) {
+        return this.textBlockService.deleteTextBlock(+id);
     }
 };
 __decorate([
@@ -40,8 +52,36 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], TextBlockController.prototype, "getOne", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
+    (0, common_1.Post)('/settings'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.AnyFilesInterceptor)()),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [text_block_dto_1.CreateTextBlockDto, Array]),
+    __metadata("design:returntype", void 0)
+], TextBlockController.prototype, "createTextBlock", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
+    (0, common_1.Put)('/settings'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.AnyFilesInterceptor)()),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [text_block_dto_1.CreateTextBlockDto, Array]),
+    __metadata("design:returntype", void 0)
+], TextBlockController.prototype, "updateTextBlock", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
+    (0, common_1.Delete)('/id/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TextBlockController.prototype, "deleteTextBlock", null);
 TextBlockController = __decorate([
-    (0, common_1.Controller)('text-blocks'),
+    (0, common_1.Controller)('/text-blocks'),
     __metadata("design:paramtypes", [text_block_service_1.TextBlockService])
 ], TextBlockController);
 exports.TextBlockController = TextBlockController;

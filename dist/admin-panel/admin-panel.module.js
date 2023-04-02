@@ -14,17 +14,19 @@ const admin_panel_service_1 = require("./admin-panel.service");
 const admin_panel_controller_1 = require("./admin-panel.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const text_block_entity_1 = require("../text-block/text-block.entity");
+const file_entity_1 = require("../file/file.entity");
+const file_module_1 = require("../file/file.module");
 let AdminPanelModule = class AdminPanelModule {
 };
 AdminPanelModule = __decorate([
     (0, common_1.Module)({
         providers: [admin_panel_service_1.AdminPanelService],
-        imports: [database_module_1.DatabaseModule, jwt_1.JwtModule.register({
+        imports: [database_module_1.DatabaseModule, file_module_1.FileModule, jwt_1.JwtModule.register({
                 secret: process.env.PRIVATE_KEY || 'SECRET',
                 signOptions: {
                     expiresIn: '24h'
                 }
-            }), typeorm_1.TypeOrmModule.forFeature([text_block_entity_1.TextBlock])],
+            }), typeorm_1.TypeOrmModule.forFeature([text_block_entity_1.TextBlock, file_entity_1.File])],
         controllers: [admin_panel_controller_1.AdminPanelController],
         exports: [jwt_1.JwtModule]
     })

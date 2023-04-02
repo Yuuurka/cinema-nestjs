@@ -1,8 +1,7 @@
 export declare class CreateTextBlockDto {
-    id: number;
-    uniqueName: string;
-    name: string;
-    image: string;
-    text: string;
-    group: string;
+    readonly id: number;
+    readonly uniqueName: string;
+    readonly name: string;
+    readonly text: string;
+    readonly group: string;
 }

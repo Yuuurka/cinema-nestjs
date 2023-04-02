@@ -12,11 +12,20 @@ const text_block_controller_1 = require("./text-block.controller");
 const text_block_service_1 = require("./text-block.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const text_block_entity_1 = require("./text-block.entity");
+const file_entity_1 = require("../file/file.entity");
+const database_module_1 = require("../database/database.module");
+const jwt_1 = require("@nestjs/jwt");
+const file_module_1 = require("../file/file.module");
 let TextBlockModule = class TextBlockModule {
 };
 TextBlockModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([text_block_entity_1.TextBlock])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([text_block_entity_1.TextBlock, file_entity_1.File]), database_module_1.DatabaseModule, jwt_1.JwtModule.register({
+                secret: process.env.PRIVATE_KEY || 'SECRET',
+                signOptions: {
+                    expiresIn: '24h'
+                }
+            }), file_module_1.FileModule],
         providers: [text_block_service_1.TextBlockService],
         controllers: [text_block_controller_1.TextBlockController],
     })

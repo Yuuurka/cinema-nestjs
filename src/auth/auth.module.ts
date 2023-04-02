@@ -4,6 +4,7 @@ import {DatabaseModule} from "../database/database.module";
 import {AuthController} from "./auth.controller";
 import {JwtModule} from "@nestjs/jwt";
 
+
 @Module({
   providers: [AuthService],
   imports: [DatabaseModule, JwtModule.register({

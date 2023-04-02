@@ -1,14 +1,26 @@
 import { Repository } from "typeorm";
 import { TextBlock } from "../text-block/text-block.entity";
-import { CreateTextBlockDto } from "../text-block/dto/text-block.dto";
+import { File } from "../file/file.entity";
+import { FileService } from "../file/file.service";
 export declare class AdminPanelService {
     private conn;
     private blockRepository;
-    constructor(conn: any, blockRepository: Repository<TextBlock>);
+    private fileRepository;
+    private fileService;
+    constructor(conn: any, blockRepository: Repository<TextBlock>, fileRepository: Repository<File>, fileService: FileService);
     updateUser(req: any): Promise<{
-        success: string;
+        code: number;
+        message: string;
+        error: any;
     }>;
-    createTextBlock(block: CreateTextBlockDto): Promise<TextBlock>;
-    updateTextBlock(post: CreateTextBlockDto): Promise<TextBlock>;
-    deleteTextBlock(id: number): Promise<void>;
+    deleteUser(id: any): Promise<{
+        code: number;
+        message: string;
+        error: any;
+    }>;
+    deleteImages(): Promise<{
+        status: number;
+        result: string;
+        Error: any;
+    }>;
 }

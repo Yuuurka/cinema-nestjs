@@ -17,7 +17,7 @@ const dbProvider = {
         port: 5432,
         user: 'postgres',
         password: 'postgres',
-        database: 'auth_hm3'
+        database: 'cinema'
     })
 };
 let DatabaseModule = class DatabaseModule {

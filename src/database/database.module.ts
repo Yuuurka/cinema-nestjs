@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { Pool } from "pg";
 import { PG_CONNECTION } from '../constants';
 
+/** Подключение к базе данных без ORM **/
 const dbProvider = {
     provide: PG_CONNECTION,
     useValue: new Pool({
@@ -14,7 +15,7 @@ const dbProvider = {
         port: 5432,
         user: 'postgres',
         password: 'postgres',
-        database: 'auth_hm3'
+        database: 'cinema'
     })
 }
 

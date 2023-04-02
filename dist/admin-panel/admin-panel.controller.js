@@ -16,7 +16,6 @@ exports.AdminPanelController = void 0;
 const common_1 = require("@nestjs/common");
 const admin_panel_service_1 = require("./admin-panel.service");
 const jwt_admin_panel_guard_1 = require("./jwt-admin-panel.guard");
-const text_block_dto_1 = require("../text-block/dto/text-block.dto");
 let AdminPanelController = class AdminPanelController {
     constructor(adminService) {
         this.adminService = adminService;
@@ -24,14 +23,11 @@ let AdminPanelController = class AdminPanelController {
     updateUser(req) {
         return this.adminService.updateUser(req);
     }
-    createTextBlock(block) {
-        return this.adminService.createTextBlock(block);
+    deleteUser(id) {
+        return this.adminService.deleteUser(+id);
     }
-    updateTextBlock(block) {
-        return this.adminService.updateTextBlock(block);
-    }
-    deleteTextBlock(id) {
-        return this.adminService.deleteTextBlock(+id);
+    deleteImages() {
+        return this.adminService.deleteImages();
     }
 };
 __decorate([
@@ -44,28 +40,19 @@ __decorate([
 ], AdminPanelController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
-    (0, common_1.Post)('/settings-text-block'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [text_block_dto_1.CreateTextBlockDto]),
-    __metadata("design:returntype", void 0)
-], AdminPanelController.prototype, "createTextBlock", null);
-__decorate([
-    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
-    (0, common_1.Put)('/settings-text-block'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [text_block_dto_1.CreateTextBlockDto]),
-    __metadata("design:returntype", void 0)
-], AdminPanelController.prototype, "updateTextBlock", null);
-__decorate([
-    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
-    (0, common_1.Delete)('/settings-text-block'),
+    (0, common_1.Delete)('/user/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], AdminPanelController.prototype, "deleteTextBlock", null);
+], AdminPanelController.prototype, "deleteUser", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
+    (0, common_1.Delete)('/delete-images'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminPanelController.prototype, "deleteImages", null);
 AdminPanelController = __decorate([
     (0, common_1.UseGuards)(jwt_admin_panel_guard_1.JwtAdminPanelGuard),
     (0, common_1.Controller)('/admin-panel'),

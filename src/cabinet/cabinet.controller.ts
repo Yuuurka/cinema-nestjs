@@ -4,6 +4,7 @@ import {CreateUserDto} from "../auth/dto/create-user.dto";
 import {JwtCabinetGuard} from "./jwt-cabinet.guard";
 
 
+/** `@Req` - обычный request **/
 @Controller()
 export class CabinetController {
     constructor(private readonly cabinetService: CabinetService) {

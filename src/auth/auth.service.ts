@@ -21,6 +21,8 @@ export class AuthService {
             throw new HttpException("Пользователь с таким логином существует", HttpStatus.BAD_REQUEST);
         }
 
+
+        /** bcrypt.hash() хеширует строку с определенной сложностью (чем больше, тем больше ресурсов потребляет, но тем безопаснее **/
         const hashPassword = await bcrypt.hash(userDto.password, 5);
 
         const user = await this.conn.query

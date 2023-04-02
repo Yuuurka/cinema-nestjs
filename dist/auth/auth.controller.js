@@ -36,6 +36,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 __decorate([
+    (0, common_1.UsePipes)(common_1.ValidationPipe),
     (0, common_1.Post)('/registration'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

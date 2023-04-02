@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Film Form</title>
+  </head>
+  <body>
+    <h1>Create Film</h1>
+    <form action="/films" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="name">name:</label>
+        <input type="text" name="name" id="name" required>
+      </div>
+	  <div>
+        <label for="year">year:</label>
+        <input type="text" name="year" id="year" required>
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" required></textarea>
+      </div>
+      <div>
+        <label for="screenshots">Screenshots:</label>
+        <input type="file" name="screenshots" id="screenshots" accept="image/*" multiple required>
+        <div id="screenshots-preview"></div>
+      </div>
+      <button type="submit">Create</button>
+    </form>
+    <script>
+      const screenshotsInput = document.querySelector('#screenshots');
+      const screenshotsPreview = document.querySelector('#screenshots-preview');
+      screenshotsInput.addEventListener('change', event => {
+        screenshotsPreview.innerHTML = '';
+        for (const file of screenshotsInput.files) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          screenshotsPreview.appendChild(img);
+        }});
+    </script>
+  </body>
+</html>

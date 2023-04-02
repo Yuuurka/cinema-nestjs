@@ -18,10 +18,14 @@ const constants_1 = require("../constants");
 const typeorm_1 = require("typeorm");
 const text_block_entity_1 = require("../text-block/text-block.entity");
 const typeorm_2 = require("@nestjs/typeorm");
+const file_entity_1 = require("../file/file.entity");
+const file_service_1 = require("../file/file.service");
 let AdminPanelService = class AdminPanelService {
-    constructor(conn, blockRepository) {
+    constructor(conn, blockRepository, fileRepository, fileService) {
         this.conn = conn;
         this.blockRepository = blockRepository;
+        this.fileRepository = fileRepository;
+        this.fileService = fileService;
     }
     async updateUser(req) {
         const id = req.id;
@@ -29,33 +33,25 @@ let AdminPanelService = class AdminPanelService {
         const fam = req.fam;
         const phone_number = req.phone_number;
         await this.conn.query(`UPDATE "Profile" SET name=$1, fam=$2, phone_number=$3 WHERE profile_id=$4`, [name, fam, phone_number, id]);
-        return { "success": "Изменения вошли в силу" };
+        return { "code": 200, "message": "Изменения вошли в силу", "error": null };
     }
-    async createTextBlock(block) {
-        const newBlock = await this.blockRepository.create(block);
-        await this.blockRepository.save(newBlock);
-        return newBlock;
+    async deleteUser(id) {
+        await this.conn.query(`DELETE FROM "Profile" WHERE id=$1`, [id]);
+        await this.conn.query(`DELETE FROM "User" WHERE id=$1`, [id]);
+        return { "code": 200, "message": `Пользователь id${id} удален`, "error": null };
     }
-    async updateTextBlock(post) {
-        await this.blockRepository.update(post.id, post);
-        const updatedBlock = await this.blockRepository.findOne({ where: { id: post.id } });
-        if (updatedBlock) {
-            return updatedBlock;
-        }
-        throw new common_1.HttpException('Block not found', common_1.HttpStatus.NOT_FOUND);
-    }
-    async deleteTextBlock(id) {
-        const deletedTodo = await this.blockRepository.delete(id);
-        if (!deletedTodo.affected) {
-            throw new common_1.HttpException('Block not found', common_1.HttpStatus.NOT_FOUND);
-        }
+    async deleteImages() {
+        return await this.fileService.deleteNonUseImages();
     }
 };
 AdminPanelService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(constants_1.PG_CONNECTION)),
     __param(1, (0, typeorm_2.InjectRepository)(text_block_entity_1.TextBlock)),
-    __metadata("design:paramtypes", [Object, typeorm_1.Repository])
+    __param(2, (0, typeorm_2.InjectRepository)(file_entity_1.File)),
+    __metadata("design:paramtypes", [Object, typeorm_1.Repository,
+        typeorm_1.Repository,
+        file_service_1.FileService])
 ], AdminPanelService);
 exports.AdminPanelService = AdminPanelService;
 //# sourceMappingURL=admin-panel.service.js.map

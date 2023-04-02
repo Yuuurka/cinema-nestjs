@@ -15,22 +15,28 @@ const cabinet_module_1 = require("./cabinet/cabinet.module");
 const admin_panel_module_1 = require("./admin-panel/admin-panel.module");
 const text_block_module_1 = require("./text-block/text-block.module");
 const typeorm_1 = require("@nestjs/typeorm");
+const file_module_1 = require("./file/file.module");
+const film_module_1 = require("./film/film.module");
+const database_module_1 = require("./database/database.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, cabinet_module_1.CabinetModule, admin_panel_module_1.AdminPanelModule, text_block_module_1.TextBlockModule,
+        imports: [auth_module_1.AuthModule, cabinet_module_1.CabinetModule, admin_panel_module_1.AdminPanelModule, text_block_module_1.TextBlockModule, typeorm_1.TypeOrmModule.forFeature(),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
                 host: 'localhost',
                 port: 5432,
                 username: 'postgres',
                 password: 'postgres',
-                database: 'auth_hm3',
+                database: 'cinema',
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                 synchronize: true,
                 autoLoadEntities: true,
             }),
+            film_module_1.FilmModule,
+            file_module_1.FileModule,
+            database_module_1.DatabaseModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
