@@ -36,8 +36,9 @@ let AdminPanelService = class AdminPanelService {
         return { "code": 200, "message": "Изменения вошли в силу", "error": null };
     }
     async deleteUser(id) {
-        await this.conn.query(`DELETE FROM "Profile" WHERE id=$1`, [id]);
-        await this.conn.query(`DELETE FROM "User" WHERE id=$1`, [id]);
+        await this.conn.query(`DELETE FROM "jwttoken" WHERE user_id=$1`, [id]);
+        await this.conn.query(`DELETE FROM "Profile" WHERE profile_id=$1`, [id]);
+        await this.conn.query(`DELETE FROM "User" WHERE user_id=$1`, [id]);
         return { "code": 200, "message": `Пользователь id${id} удален`, "error": null };
     }
     async deleteImages() {
