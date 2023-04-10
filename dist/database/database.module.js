@@ -8,24 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DatabaseModule = void 0;
 const common_1 = require("@nestjs/common");
-const pg_1 = require("pg");
-const constants_1 = require("../constants");
-const dbProvider = {
-    provide: constants_1.PG_CONNECTION,
-    useValue: new pg_1.Pool({
-        host: 'localhost',
-        port: 5432,
-        user: 'postgres',
-        password: 'postgres',
-        database: 'cinema'
-    })
-};
+const config_1 = require("@nestjs/config");
+const database_provider_1 = require("./database.provider");
 let DatabaseModule = class DatabaseModule {
 };
 DatabaseModule = __decorate([
     (0, common_1.Module)({
-        providers: [dbProvider],
-        exports: [dbProvider],
+        imports: [config_1.ConfigModule.forRoot()],
+        providers: [database_provider_1.dbProvider],
+        exports: [database_provider_1.dbProvider],
     })
 ], DatabaseModule);
 exports.DatabaseModule = DatabaseModule;

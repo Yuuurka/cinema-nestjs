@@ -12,6 +12,7 @@ const cabinet_controller_1 = require("./cabinet.controller");
 const cabinet_service_1 = require("./cabinet.service");
 const database_module_1 = require("../database/database.module");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let CabinetModule = class CabinetModule {
 };
 CabinetModule = __decorate([
@@ -19,7 +20,7 @@ CabinetModule = __decorate([
         controllers: [cabinet_controller_1.CabinetController],
         providers: [cabinet_service_1.CabinetService],
         exports: [cabinet_service_1.CabinetService, jwt_1.JwtModule],
-        imports: [database_module_1.DatabaseModule, jwt_1.JwtModule.register({
+        imports: [config_1.ConfigModule.forRoot(), database_module_1.DatabaseModule, jwt_1.JwtModule.register({
                 secret: process.env.PRIVATE_KEY || 'SECRET',
                 signOptions: {
                     expiresIn: '24h'

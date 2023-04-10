@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const config_1 = require("@nestjs/config");
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
@@ -22,14 +23,14 @@ let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, cabinet_module_1.CabinetModule, admin_panel_module_1.AdminPanelModule, text_block_module_1.TextBlockModule, typeorm_1.TypeOrmModule.forFeature(),
+        imports: [config_1.ConfigModule.forRoot(), auth_module_1.AuthModule, cabinet_module_1.CabinetModule, admin_panel_module_1.AdminPanelModule, text_block_module_1.TextBlockModule, typeorm_1.TypeOrmModule.forFeature(),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'postgres',
-                password: 'postgres',
-                database: 'cinema',
+                host: process.env.DATABASE_HOST,
+                port: +process.env.DATABASE_PORT,
+                username: process.env.DATABASE_USERNAME,
+                password: process.env.DATABASE_PASSWORD,
+                database: process.env.DATABASE_NAME,
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                 synchronize: true,
                 autoLoadEntities: true,

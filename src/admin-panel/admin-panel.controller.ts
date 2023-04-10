@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {AdminPanelService} from "./admin-panel.service";
 import {JwtAdminPanelGuard} from "./jwt-admin-panel.guard";
-import {CreateTextBlockDto} from "../text-block/dto/text-block.dto";
+import {CreateUserDto} from "../auth/dto/create-user.dto";
 
 @UseGuards(JwtAdminPanelGuard)
 @Controller('/admin-panel')
@@ -11,7 +11,7 @@ export class AdminPanelController {
 
     @UseGuards(JwtAdminPanelGuard)
     @Put('/update-user')
-    updateUser(@Body() req: Request){
+    updateUser(@Body() req: { createUserDto: CreateUserDto }){
         return this.adminService.updateUser(req);
     }
 

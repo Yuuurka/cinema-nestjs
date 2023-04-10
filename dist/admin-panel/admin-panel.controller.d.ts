@@ -1,20 +1,27 @@
 import { AdminPanelService } from "./admin-panel.service";
+import { CreateUserDto } from "../auth/dto/create-user.dto";
 export declare class AdminPanelController {
     private readonly adminService;
     constructor(adminService: AdminPanelService);
-    updateUser(req: Request): Promise<{
-        code: number;
-        message: string;
+    updateUser(req: {
+        createUserDto: CreateUserDto;
+    }): Promise<{
+        code: import("@nestjs/common").HttpStatus;
+        result: any;
+        error: string;
+    } | {
+        code: import("@nestjs/common").HttpStatus;
+        result: string;
         error: any;
     }>;
     deleteUser(id: string): Promise<{
-        code: number;
-        message: string;
+        code: import("@nestjs/common").HttpStatus;
+        result: string;
         error: any;
     }>;
     deleteImages(): Promise<{
-        status: number;
+        code: import("@nestjs/common").HttpStatus;
         result: string;
-        Error: any;
+        error: any;
     }>;
 }

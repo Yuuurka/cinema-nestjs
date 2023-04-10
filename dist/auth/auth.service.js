@@ -46,16 +46,16 @@ let AuthService = class AuthService {
         if (method == "login") {
             const isAdmin = (await this.conn.query(`SELECT isadmin FROM "User" WHERE login=$1`, [userDto.login]))['rows'][0]['isadmin'];
             const payload = { login: userDto.login, password: userDto.password, isAdmin };
-            await this.conn.query(`UPDATE "jwttoken" SET token=$1 WHERE user_id=$2`, [this.jwtService.sign(payload), userID]);
+            await this.conn.query(`UPDATE "jwttoken" SET token=$1 WHERE user_id=$2`, [this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY }), userID]);
             return {
-                token: this.jwtService.sign(payload)
+                token: this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY })
             };
         }
         else {
             const payload = { login: userDto.login, password: userDto.password, isAdmin: false };
-            await this.conn.query(`INSERT INTO "jwttoken" (user_id, token) VALUES ($1, $2)`, [userID, this.jwtService.sign(payload)]);
+            await this.conn.query(`INSERT INTO "jwttoken" (user_id, token) VALUES ($1, $2)`, [userID, this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY })]);
             return {
-                token: this.jwtService.sign(payload)
+                token: this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY })
             };
         }
     }

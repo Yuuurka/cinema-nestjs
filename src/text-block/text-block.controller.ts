@@ -6,7 +6,6 @@ import {
     Put,
     Param,
     Delete,
-    Query,
     UseGuards,
     UploadedFiles,
     UseInterceptors

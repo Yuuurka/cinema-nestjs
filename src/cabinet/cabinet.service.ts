@@ -7,6 +7,7 @@ export class CabinetService {
     constructor(@Inject(PG_CONNECTION) private conn: any, private jwtService: JwtService) {}
 
     async getInfoUser(req){
+        console.log(req)
         const header = req.get("Authorization").split(' ')[1];
         const login = this.jwtService.verify(header)['login']
 

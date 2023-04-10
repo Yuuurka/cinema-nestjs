@@ -1,4 +1,4 @@
-import {HttpException, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uuid from 'uuid';
@@ -59,10 +59,10 @@ export class FileService {
             createdAt: LessThan(pastDate)
         });
         if (!deletedImages.affected) {
-            return {"status": 200, "result": "Nothing to delete", "Error": null}
+            return {"code": HttpStatus.OK, "result": "Nothing to delete", "error": null}
         }
         await this.deleteFromDisk(namesDeletedImages);
-        return {"status": 200, "result": `${deletedImages.affected} images removed`, "Error": null}
+        return {"code": HttpStatus.OK, "result": `${deletedImages.affected} images removed`, "error": null}
     }
 
     async deleteBlockImages(entity: string, id: number){
@@ -75,12 +75,6 @@ export class FileService {
 
     private subtractHours(date, hours) {
         date.setHours(date.getHours() - hours);
-
-        return date;
-    }
-
-    private subtractSecs(date, secs) {
-        date.setHours(date.getSeconds() - secs);
 
         return date;
     }

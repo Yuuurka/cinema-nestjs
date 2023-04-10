@@ -35,7 +35,7 @@ __decorate([
     (0, common_1.Put)('/update-user'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Request]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AdminPanelController.prototype, "updateUser", null);
 __decorate([

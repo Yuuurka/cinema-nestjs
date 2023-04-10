@@ -7,11 +7,12 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {TextBlock} from "../text-block/text-block.entity";
 import {File} from "../file/file.entity"
 import {FileModule} from "../file/file.module";
+import {ConfigModule} from "@nestjs/config";
 
 
 @Module({
     providers: [AdminPanelService],
-    imports: [DatabaseModule, FileModule, JwtModule.register( {
+    imports: [ConfigModule.forRoot(), DatabaseModule, FileModule, JwtModule.register( {
         secret: process.env.PRIVATE_KEY || 'SECRET',
         signOptions: {
             expiresIn: '24h'

@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { File } from "./file.entity";
 import { Repository } from "typeorm";
 export declare class FileService {
@@ -5,12 +6,11 @@ export declare class FileService {
     constructor(fileRepository: Repository<File>);
     createFile(file: any, entity: string, entityId: number): Promise<string>;
     deleteNonUseImages(): Promise<{
-        status: number;
+        code: HttpStatus;
         result: string;
-        Error: any;
+        error: any;
     }>;
     deleteBlockImages(entity: string, id: number): Promise<void>;
     private subtractHours;
-    private subtractSecs;
     private deleteFromDisk;
 }

@@ -29,17 +29,21 @@ let AdminPanelService = class AdminPanelService {
     }
     async updateUser(req) {
         const id = req.id;
+        const exist = (await this.conn.query(`SELECT 1 FROM "User" WHERE user_id=$1`, [id])).rowCount;
+        if (exist != 1) {
+            return { "code": common_1.HttpStatus.OK, "result": null, "error": "Пользователя не существует" };
+        }
         const name = req.name;
         const fam = req.fam;
         const phone_number = req.phone_number;
         await this.conn.query(`UPDATE "Profile" SET name=$1, fam=$2, phone_number=$3 WHERE profile_id=$4`, [name, fam, phone_number, id]);
-        return { "code": 200, "message": "Изменения вошли в силу", "error": null };
+        return { "code": common_1.HttpStatus.OK, "result": "Изменения вошли в силу", "error": null };
     }
     async deleteUser(id) {
         await this.conn.query(`DELETE FROM "jwttoken" WHERE user_id=$1`, [id]);
         await this.conn.query(`DELETE FROM "Profile" WHERE profile_id=$1`, [id]);
         await this.conn.query(`DELETE FROM "User" WHERE user_id=$1`, [id]);
-        return { "code": 200, "message": `Пользователь id${id} удален`, "error": null };
+        return { "code": common_1.HttpStatus.OK, "result": `Пользователь id${id} удален`, "error": null };
     }
     async deleteImages() {
         return await this.fileService.deleteNonUseImages();

@@ -12,12 +12,13 @@ const auth_service_1 = require("./auth.service");
 const database_module_1 = require("../database/database.module");
 const auth_controller_1 = require("./auth.controller");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         providers: [auth_service_1.AuthService],
-        imports: [database_module_1.DatabaseModule, jwt_1.JwtModule.register({
+        imports: [config_1.ConfigModule.forRoot(), database_module_1.DatabaseModule, jwt_1.JwtModule.register({
                 secret: process.env.PRIVATE_KEY || 'SECRET',
                 signOptions: {
                     expiresIn: '24h'

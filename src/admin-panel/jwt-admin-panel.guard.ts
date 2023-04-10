@@ -14,7 +14,7 @@ export class JwtAdminPanelGuard implements CanActivate{
             const authHeader = req.headers.authorization;
             const bearer = authHeader.split(' ')[0];
             const token = authHeader.split(' ')[1];
-            const isAdmin = Boolean(this.jwtService.verify(token)['isAdmin'])
+            const isAdmin = Boolean(this.jwtService.verify(token, {secret: 'SECRET'})['isAdmin'])
 
             if (bearer !== 'Bearer' || !token){
                 throw new UnauthorizedException({message: `Пользователь не авторизован`})
@@ -24,7 +24,7 @@ export class JwtAdminPanelGuard implements CanActivate{
                 throw new UnauthorizedException({message: 'Вы не являетесь администратором'})
             }
 
-            req.user = this.jwtService.verify(token);
+            req.user = this.jwtService.verify(token, {secret: 'SECRET'});
             return true
         } catch (e) {
             throw new UnauthorizedException({message: 'Вы не являетесь администратором/ошибка сервера'})

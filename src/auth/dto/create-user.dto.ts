@@ -1,6 +1,7 @@
 import {IsEmail, IsMobilePhone, IsString, Length} from "class-validator";
 
 export class CreateUserDto{
+    readonly user_id: number;
     @IsString({message: "Email должен быть строкой"})
     @IsEmail({}, {message: "Некорректный ввод Email"})
     readonly login: string;

@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,14 +16,14 @@ import {DatabaseModule} from "./database/database.module";
 /** Как и в другой .module файл импортируются его контроллеры и провайдеры[сервисы], если такие существуют **/
 /** Подключение к базе данных с ORM **/
 @Module({
-  imports: [AuthModule, CabinetModule, AdminPanelModule, TextBlockModule,TypeOrmModule.forFeature(),
+  imports: [ConfigModule.forRoot(), AuthModule, CabinetModule, AdminPanelModule, TextBlockModule,TypeOrmModule.forFeature(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'cinema',
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,

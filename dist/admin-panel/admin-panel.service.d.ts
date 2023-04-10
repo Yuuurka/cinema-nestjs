@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { Repository } from "typeorm";
 import { TextBlock } from "../text-block/text-block.entity";
 import { File } from "../file/file.entity";
@@ -9,18 +10,22 @@ export declare class AdminPanelService {
     private fileService;
     constructor(conn: any, blockRepository: Repository<TextBlock>, fileRepository: Repository<File>, fileService: FileService);
     updateUser(req: any): Promise<{
-        code: number;
-        message: string;
+        code: HttpStatus;
+        result: any;
+        error: string;
+    } | {
+        code: HttpStatus;
+        result: string;
         error: any;
     }>;
     deleteUser(id: any): Promise<{
-        code: number;
-        message: string;
+        code: HttpStatus;
+        result: string;
         error: any;
     }>;
     deleteImages(): Promise<{
-        status: number;
+        code: HttpStatus;
         result: string;
-        Error: any;
+        error: any;
     }>;
 }

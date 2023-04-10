@@ -22,14 +22,14 @@ let JwtAdminPanelGuard = class JwtAdminPanelGuard {
             const authHeader = req.headers.authorization;
             const bearer = authHeader.split(' ')[0];
             const token = authHeader.split(' ')[1];
-            const isAdmin = Boolean(this.jwtService.verify(token)['isAdmin']);
+            const isAdmin = Boolean(this.jwtService.verify(token, { secret: 'SECRET' })['isAdmin']);
             if (bearer !== 'Bearer' || !token) {
                 throw new common_1.UnauthorizedException({ message: `Пользователь не авторизован` });
             }
             if (isAdmin == false) {
                 throw new common_1.UnauthorizedException({ message: 'Вы не являетесь администратором' });
             }
-            req.user = this.jwtService.verify(token);
+            req.user = this.jwtService.verify(token, { secret: 'SECRET' });
             return true;
         }
         catch (e) {
