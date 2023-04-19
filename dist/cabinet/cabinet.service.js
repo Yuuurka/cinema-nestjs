@@ -22,7 +22,6 @@ let CabinetService = class CabinetService {
         this.jwtService = jwtService;
     }
     async getInfoUser(req) {
-        console.log(req);
         const header = req.get("Authorization").split(' ')[1];
         const login = this.jwtService.verify(header)['login'];
         const userID = (await this.conn.query(`SELECT user_id FROM "User" WHERE login=$1`, [login]))['rows'][0]['user_id'];

@@ -1,6 +1,5 @@
 export declare class User {
-    user_id: number;
+    id: number;
     login: string;
     password: string;
-    isAdmin: boolean;
 }

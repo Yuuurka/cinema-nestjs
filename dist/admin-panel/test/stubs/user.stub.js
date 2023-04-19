@@ -5,6 +5,6 @@ exports.userStub = {
     user_id: 1,
     login: 'example@email.com',
     password: 'example@email.com',
-    isAdmin: false
+    isAdmin: true
 };
 //# sourceMappingURL=user.stub.js.map
