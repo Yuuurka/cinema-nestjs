@@ -55,11 +55,12 @@ describe('AdminPanelController',  () => {
 
   describe('updateUser',() => {
     it('updateUser',async () => {
+      const token = process.env.CURRENT_ADMIN_TOKEN;
       const response = await request(app.getHttpServer())
           .put('/admin-panel/update-user')
-          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicXdlcnR5MTIzIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjgwOTg3NTkxLCJleHAiOjE2ODEwNzM5OTF9.wpsub2GsFJ-jBxldhbF-2IIRoNazIiDcd6iFBwko1Hs')
+          .set('Authorization', `Bearer ${token}`)
           .send({
-            id: 3,
+            id: 1,
             name: "kir",
             fam: "kirov"
           })

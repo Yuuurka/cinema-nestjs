@@ -1,18 +1,14 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Profile} from "./profile.entity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
 
 @Entity()
 export class User {
-    @OneToOne(() => Profile, profile => profile.profile_id)
-    @PrimaryGeneratedColumn()
-    user_id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({nullable: false})
-    login: string;
+  @Column({nullable: false})
+  login: string;
 
-    @Column({nullable: false})
-    password: string;
-
-    @Column({nullable: false, default: false})
-    isAdmin: boolean;
+  @Column({nullable: false})
+  password: string;
 }
